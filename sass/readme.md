@@ -21,5 +21,11 @@ npm run start
 
 ```sass
 $warna1: #eeffcc;
+
+body {
+  background-color: $warna1;
+}
 ```
+
+
 
