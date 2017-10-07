@@ -19,7 +19,25 @@ npm run start
 
 * Kode html yang digunakan dalam file __index.html__ adalah sebagai berikut:
 ```html
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>SASS</title>
+</head>
+<body>
+  <h1>SASS</h1>
+  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+    <div class="container">
+      <div class="col-4">1</div>
+      <div class="col-4">2</div>
+      <div class="col-4">3</div>
+      <div class="col-4">4</div>
+  </div>
+</body>
+</html>
 ```
 
 ## Sass
