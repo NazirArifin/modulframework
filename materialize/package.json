@@ -24,6 +24,7 @@
     "webpack-dev-server": "^2.9.1"
   },
   "dependencies": {
+    "font-awesome": "^4.7.0",
     "materialize-css": "^0.100.2"
   }
 }
