@@ -76,12 +76,6 @@ import { HttpClientModule } from '@angular/common/http';
   align-items: center;
   justify-content: center;
 
-  .title {
-    color: white;
-    margin:0;
-    padding:50px 20px;
-  }
-
   .media {
     margin-bottom: 15px;
     img {
@@ -117,7 +111,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 ...
 ```
 
-* Pastikan anda terhubung ke internet sehingga di aplikasi anda akan muncul lima mahasiswa yang berasal dari _endpoint_ __api.unira.ac.id__.
+* Pastikan anda terhubung ke internet sehingga di aplikasi anda akan muncul lima mahasiswa yang berasal dari _endpoint_ [https://api.unira.ac.id](__api.unira.ac.id__).
 
 * Buat pagination untuk menampilkan lima mahasiswa berikutnya!
 
