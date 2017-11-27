@@ -33,7 +33,7 @@ npm install --save-dev concurently nodemon browser-sync
 * Setelah semua perintah diatas dijalankan, buka file __package.json__ di folder project Anda dan ubah bagian __scripts__ menjadi seperti ini:
 
 ```js
-  scripts": {
+  "scripts": {
     "start": "node ./bin/www",
     "devstart": "nodemon --watch views --watch routes --watch public --ext js,twig,scss ./bin/www",
     "browserSync": "browser-sync start --proxy localhost:3000 --reload-delay 700 --files views/*.twig,routes/*.js,public/stylesheets/*.scss",
