@@ -257,3 +257,12 @@ var mydb = require('../mydb.js');
 
 {% endblock %}
 ``` 
+
+* Ubah file ```routes/cds.js``` dibagian respon get menjadi seperti berikut:
+
+```js
+router.get('/', function(req, res, next) {
+
+  res.render('cd', { title: 'Tambah/Ubah CD' });
+});
+```
