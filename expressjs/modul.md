@@ -27,7 +27,7 @@ npm install
 
 npm install --save jquery popper.js bootstrap@4.0.0-beta.2
 
-npm install --save-dev concurently nodemon browser-sync
+npm install --save-dev concurrently nodemon browser-sync
 ```
 
 * Setelah semua perintah diatas dijalankan, buka file __package.json__ di folder project Anda dan ubah bagian __scripts__ menjadi seperti ini:
