@@ -106,7 +106,7 @@ $route['berita/terbaru'] = 'berita/terbaru';
 <table class="table">
   <thead>
     <tr>
-	  <th>NO</th>
+      <th>NO</th>
 	  <th>JUDUL</th>
 	  <th>PENGARANG</th>
 	  <th>TAHUN</th>
@@ -132,11 +132,7 @@ $route['berita/terbaru'] = 'berita/terbaru';
 ```php
 ...
 public function index($page = 'home') {
- $this->load->database();
- $this->load->model('berita_model', '', true);
- $data['berita'] = $this->berita_model->get();
-
- $data['title'] = 'CDCOL';
+ $data['title'] = 'CDCOL'; // lewatkan string ke view
  $this->load->view('templates/header', $data);
  $this->load->view('berita/' . $page, $data);
  $this->load->view('templates/footer');
@@ -210,7 +206,7 @@ class Berita_model extends CI_Model {
   	$this->load->model('berita_model', '', true); // load model, koneksikan manual
   	$data['berita'] = $this->berita_model->get();
 
-    $data['title'] = ucfirst($page);
+    $data['title'] = 'CDCOL';
     $this->load->view('templates/header', $data);
     $this->load->view('berita/' . $page, $data);
     $this->load->view('templates/footer');
