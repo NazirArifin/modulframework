@@ -191,8 +191,8 @@ class Berita_model extends CI_Model {
   }
 
   public function get() {
-  	$query = $this->db->query("SELECT * FROM cds");
-  	return $query->result();
+    $query = $this->db->query("SELECT * FROM cds");
+    return $query->result();
   }
 }
 ```
@@ -202,9 +202,9 @@ class Berita_model extends CI_Model {
 ```php
 ...
   public function index($page = 'home') {
-  	$this->load->database(); // load database
-  	$this->load->model('berita_model', '', true); // load model, koneksikan manual
-  	$data['berita'] = $this->berita_model->get();
+    $this->load->database(); // load database
+    $this->load->model('berita_model', '', true); // load model, koneksikan manual
+    $data['berita'] = $this->berita_model->get();
 
     $data['title'] = 'CDCOL';
     $this->load->view('templates/header', $data);
