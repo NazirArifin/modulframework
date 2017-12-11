@@ -29,7 +29,7 @@ application
   ...
   views
 system
-user_guid
+user_guide
 ```
 
 * Sebagian besar waktu Anda akan mengedit file yang ada di dalam folder application seperti controller, models, dan views.
@@ -39,7 +39,7 @@ user_guid
 * Controller adalah sebuah _class_ yang membantu dalam urusan melimpahkan tugas ke _class_ lain. Dia menjadi pusat dari semua _request_ dan seperti lem dari sebuah aplikasi.
 * Contohnya jika kita mengakses URL ```http://localhost/berita/terbaru/10``` berarti kita berasumsi bahwa kita memanggil controller ```berita``` dengan method ```terbaru``` dan parameter yang dimasukkan adalah ```10```.
 * Format umumnya adalah: ```http://localhost/[controller-class]/[controller-method]/[arguments]```
-* Sekarang kita buat controller baru untuk menangani url ```berita/terbaru/10``` dengan membuat file __application/controllers/Berita.php__ dengan isi seperti berikut:
+* Sekarang kita buat controller baru untuk menangani url seperti ```berita/terbaru/10``` dengan membuat file __application/controllers/Berita.php__ dengan isi seperti berikut:
 
 ```php
 <?php
@@ -47,12 +47,14 @@ class Berita extends CI_Controller {
   public function index($page = 'home') {
     
   }
-  public function terbaru() {
+  public function terbaru($params = 0) {
     
   }
 }
 ```
-* Pada kode diatas kita membuat _method_ __index()__ yang menerima sebuah parameter opsional berisi nama dari halaman yang akan dimuat serta _method_ __terbaru()__. File templates jika mengikuti url sebelumnya biasanya akan diletakkan di folder __application/views/berita/__.
+
+* Pada kode diatas kita membuat _method_ __index()__ yang menerima sebuah parameter opsional berisi nama dari halaman yang akan dimuat serta _method_ __terbaru()__. 
+* File templates (halaman html) jika mengikuti url diatas biasanya akan diletakkan di folder __application/views/berita/__.
 
 ### Routing
 
@@ -71,11 +73,11 @@ $route['berita/terbaru'] = 'berita/terbaru';
 
 * Sekarang coba akses halaman ```http://localhost/berita``` dan ```http://localhost/berita/terbaru```. Seharusnya Anda melihat tampilan kosong di browser Anda.
 
-* Untuk bentuk routing yang lebih lengkap dapat Anda lihat di [Routing CogeIgniter](https://codeigniter.com/userguide3/general/routing.html)
+* Untuk bentuk routing yang lebih lengkap dapat Anda lihat dan pelajari di [Routing CogeIgniter](https://codeigniter.com/userguide3/general/routing.html)
 
 ## Views
 
-* View adalah template html yang digunaka hanya untuk menampilkan data. Kita akan mencoba membuat _header_ dan _footer_ untuk tampilan aplikasi. Buat folder __templates__ di folder __application/views__ dengan nama file ```application/views/templates/header.php``` dan ```application/views/templates/footer.php```.
+* View adalah template html yang digunakan hanya untuk menampilkan data. Kita akan mencoba membuat _header_ dan _footer_ untuk tampilan aplikasi. Buat folder __templates__ di folder __application/views__ dengan nama file ```application/views/templates/header.php``` dan ```application/views/templates/footer.php```.
 
 * Isi dari file __application/views/templates/header.php__ adalah:
 
@@ -103,38 +105,44 @@ $route['berita/terbaru'] = 'berita/terbaru';
 
 ```html
 <table class="table">
-	<thead>
-		<tr>
-			<th>NO</th>
-			<th>JUDUL</th>
-			<th>PENGARANG</th>
-			<th>TAHUN</th>
-			<th></th>
-		</tr>
-	</thead>
-	<tbody>
-		<tr>
-			<td>1.</td>
-			<td>Judul</td>
-			<td>Pengarang</td>
-			<td>Tahun</td>
-			<td>
-				<a href="" class="btn btn-info">EDIT</a> <a href="" class="btn btn-danger">HAPUS</a>
-			</td>
-		</tr>
-	</tbody>
+  <thead>
+    <tr>
+	  <th>NO</th>
+	  <th>JUDUL</th>
+	  <th>PENGARANG</th>
+	  <th>TAHUN</th>
+	  <th></th>
+	</tr>
+  </thead>
+  <tbody>
+	<tr>
+	  <td>1.</td>
+	  <td>Judul</td>
+	  <td>Pengarang</td>
+	  <td>Tahun</td>
+	  <td>
+	    <a href="" class="btn btn-info">EDIT</a> <a href="" class="btn btn-danger">HAPUS</a>
+	  </td>
+	</tr>
+  </tbody>
 </table>
 ```
 
 * Sekarang kita ubah file controller __Berita.php__ di bagian _method_ __index()__ menjadi seperti berikut:
 
 ```php
+...
 public function index($page = 'home') {
-  $data['title'] = ucfirst($page);
-  $this->load->view('templates/header', $data);
-  $this->load->view('berita/' . $page, $data);
-  $this->load->view('templates/footer');
+ $this->load->database();
+ $this->load->model('berita_model', '', true);
+ $data['berita'] = $this->berita_model->get();
+
+ $data['title'] = 'CDCOL';
+ $this->load->view('templates/header', $data);
+ $this->load->view('berita/' . $page, $data);
+ $this->load->view('templates/footer');
 }
+...
 ```
 
 * Jika Anda mengakses url ```http://localhost:8080/berita``` maka seharusnya Anda dapat melihat tampilan tabel template di file ```application/views/berita/home.php```.
@@ -152,6 +160,7 @@ $db['default'] = array(
   'password' => '',
   'database' => 'cdcol',
   'dbdriver' => 'mysqli',
+...
 ```
 
 * Bagian yang harus diubah adalah __username__, __password__, __database__, dan __dbdriver__. Karena kita menggunakan database MySQL maka dbdriver tetap dibiarkan dengan nilai __mysqli__.
