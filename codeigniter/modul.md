@@ -62,11 +62,10 @@ class Berita extends CI_Controller {
 
 ```php
 ...
-
 // routes untuk berita
 $route['berita'] = 'berita';
 $route['berita/terbaru'] = 'berita/terbaru';
-
+...
 ```
 
 * Routing diatas memetakan url ```http://localhost/berita``` ke class controller ```Berita``` dengan pola ```$route[urlnya] = classController```.
