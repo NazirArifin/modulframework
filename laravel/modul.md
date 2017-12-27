@@ -260,6 +260,7 @@ use Illuminate\Support\Facades\DB;
 @endif
 
 <form method="POST" action="/cd">
+  {{ csrf_field() }}
   <div class="form-group row">
     <label for="titel" class="col-sm-2 col-form-label">Judul</label>
     <div class="col-sm-10">
