@@ -1,5 +1,9 @@
 #Ecmascript 2015 (ES6)
 
+```js
+const a = 4;
+```
+
 Tujuan pembelajaran: Mahasiswa mengenal dan dapat menggunakan Javascript sebagai dasar framework Javascript dengan baik.
 
 ## Persiapan
