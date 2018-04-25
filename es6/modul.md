@@ -1,4 +1,4 @@
-#Ecmascript 2015 (ES6)
+# Ecmascript 2015 (ES6)
 
 ```js
 const a = 4;

@@ -85,7 +85,7 @@ function Greeting(props) {
 * Beberapa hal yang harus diketahui adalah:
 
 1. Nama fungsi sebaiknya diawali huruf kapital (__Welcome__, __Greeting__, dsb);
-2. Jika template HTML memiliki properti __class__ maka harus diganti dengan __className__, contohnya: ___className="alert alert-info"___;
+2. Jika template HTML memiliki properti __class__ maka harus diganti dengan __className__, contohnya: __className="alert alert-info"__;
 3. Template HTML yang direturn harus berada dalam satu induk tag, jika diperlukan gunakan __div__ untuk membungkus tag-tag yang sejajar;
 4. Karena JSX menggunakan XML maka untuk tag tunggal seperti __img, br, hr__ dsb maka harus diberi _close tag_ secara langsung, contohnya: 
 ```html
@@ -300,4 +300,5 @@ class MhsList extends React.Component {
 export default MhsList;
 ```
 
+* Anda perhatikan bahwa kita meng _import_ ```{ Link }``` dari __react-router-dom__ yang digunakan oleh component __ListItem__. Prop yang digunakan adalah __to={path}__ yang mana akan menghasilkan sebuah link yang jika diklik akan mengarahkan Router ke path yang ditentukan.
 
