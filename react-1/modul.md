@@ -191,6 +191,47 @@ class Toggle extends React.Component {
 <button onClick={(e) => this.deleteRow(id, e)}>Hapus baris</button>
 ```
 
+## Membuat List (Daftar)
 
+* Pada umumnya untuk menampilkan list dari sebuah array di React menggunakan fungsi __map()__ yang mana fungsi ini akan mencacah setiap item dari array satu persatu.
 
+```jsx
+const array = [1, 2, 3, 4, 5];
+const List = ({ numbers }) => (
+  <ul>
+    {
+      numbers.map(number => (
+        <li>{number}</li>
+      ))
+    }
+  </ul>
+);
 
+...
+  render() {
+    return (
+      <div className="App">
+        <List numbers={array} />
+      </div>
+    );
+  }
+..
+```
+
+* Jika kode diatas dijalankan akan terdapat peringatan bahwa sebuah __key__ harus diikutkan dalam list sehingga kode diatas harus diubah menjadi:
+
+```jsx
+...
+      <li key={number.toString()}>{number}</li>
+...
+```
+
+* Jika Anda mendapatkan data dari resource biasanya key akan diisi dengan __id__ dari data tersebut, namun jika data tidak memiliki id maka kita dapat menggunakan _item index_ dengan mengubah kode menjadi seperti berikut:
+
+```jsx
+...
+      numbers.map((number, index) => (
+        <li key={index}>{number}</li>
+      ))
+...
+```
