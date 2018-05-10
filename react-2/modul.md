@@ -11,9 +11,9 @@ create-react-app cdcol
 cd cdcol
 ```
 
-* Hapus semua file yang berada dalam folder kecuali file __App.js__, __index.js__, __App.css__ dan terakhir __App.js__.
+* Hapus semua file yang berada dalam folder kecuali file __App.js__, __index.js__, __App.css__ dan __App.js__.
 
-* Hapus semua (kosongkan) isi di __scr/App.css__ dan kemudian fileModifikasi file __src/App.js__ menjadi seperti berikut:
+* Hapus semua (kosongkan) isi di __src/App.css__ dan kemudian modifikasi file __src/App.js__ menjadi seperti berikut:
 
 ```jsx
 import React, { Component } from 'react';
