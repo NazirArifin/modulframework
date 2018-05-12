@@ -49,7 +49,7 @@ window.resizeTo(window.screen.width, window.screen.height);
 ```
 * Bagian yang berbeda dengan project sebelumnya (React 2) adalah kita tidak menggunakan __BrowserRouter__ tapi diganti dengan __HashRouter__ dengan begitu kita juga harus mengganti bagian di ReactDOM.render.
 
-### Redunk Middleware (Redux Thunk)
+### Redux Middleware (Redux Thunk)
 
 * Request ke database ataupun ke API server meskipun cepat tapi kita tidak dapat memastikan tereksekusi secara berurutan (asinkron), karena itu kita perlu modul tambahan yaitu __redux-thunk__ yang bisa mengatasi permasalahan dispatch secara asinkron. 
 
@@ -279,6 +279,8 @@ export function saveCd(cd) {
 
 * Dan selanjutnya kita ubah __src/reducers.js__ dengan menghapus bagian __actions.SAVE_CD__
 
+___
+
 ## Data Source dari API
 
 * Pada umumnya API _endpoint_ disediakan oleh server dan dibuat dengan bahasa pemrograman sisi server seperti PHP, Python, NodeJS dan sebagainya. Namun kali ini kita akan menggunakan [JSON Server](https://github.com/typicode/json-server) untuk menyediakan layanan data untuk aplikasi ReactJS yang kita buat.
@@ -289,7 +291,7 @@ export function saveCd(cd) {
 npm install -g json-server
 ```
 
-* Buat file __dc.json__ dan letakkan di folder manapun dengan isi seperti berikut:
+* Buat file __cdcol.json__ dan letakkan di folder manapun dengan isi seperti berikut:
 
 ```json
 {
@@ -298,38 +300,141 @@ npm install -g json-server
       "titel": "Beauty",
       "interpret": "Ryuichi Sakamoto",
       "jahr": "1990",
-      "id": "1"
+      "id": 1
     },
     {
       "titel": "Goodbye Country (Hello Nightclub)",
       "interpret": "Groove Armada",
       "jahr": "2001",
-      "id": "4"
+      "id": 4
     },
     {
       "titel": "Glee",
       "interpret": "Bran Van 3000",
       "jahr": "1997",
-      "id": "5"
+      "id": 5
     }
   ]
 }
 ```
 
-* Di folder dimana file json tersebut diletakkan ketikkan perintah berikut:
+* Di folder dimana file json tersebut diletakkan ketikkan perintah berikut untuk membuat server berdasarkan file json pada port 8080:
 
 ```sh
-json-server --watch cdcol.json
+json-server -p 8080 --watch cdcol.json
 ```
 
-* Sekarang Anda dapat mengakses alamat __http://localhost:3000/cds__ maka di browser akan muncul data json yang ada di file cdcol.json. Untuk mengakses data dengan id 1 maka Anda dapat mengetikkan __http://localhost:3000/cds/1__.
+* Sekarang Anda dapat mengakses alamat __http://localhost:8080/cds__ maka di browser akan muncul data json yang ada di file cdcol.json. Untuk mengakses data dengan id 1 maka Anda dapat mengetikkan __http://localhost:8080/cds/1__.
 
-* Buat project baru dengan mengulangi proses di bagian [__Persiapan__](#persiapan).
+* Buat project baru nw react dengan menggunakan perintah berikut: 
+
+```sh
+create-nw-react-app nama-app2
+cd nama-app2
+npm install --save @material-ui/icons material-ui@next react-redux react-router-dom redux redux-form redux-thunk
+```
+
+* _Copy_ semua file dalam folder __src__ dan file __index.html__ dari project sebelumnya yang menggunakan database ke project baru Anda. Hapus beberapa file berikut ini: __dbconfig.json, mysql.js__. Kemudian modifikasi file __src/actions.js__ dengan __MENGHAPUS__ kode yang berhubungan dengan mysql seperti kode ini:
+
+```js
+import MySQL from './mysql';
+import dbconfig from './dbconfig.json';
+...
+const mysql = new MySQL(dbconfig);
+...
+mysql.query...
+...
+mysql.query...
+...
+```
 
 ### HTTP Request
 
-* ReactJS tidak menyediakan fungsi khusus untuk melakukan request asinkron ke server, karena itu kita perlu menginstal modul tambahan yaitu __axios__.
+* ReactJS tidak menyediakan fungsi khusus untuk melakukan request asinkron ke server, karena itu kita perlu menginstal modul tambahan yaitu [__axios__](https://github.com/axios/axios).
 
 ```sh
 npm install --save axios
 ```
+
+* Kita akan mengubah asinkron action creator di file __src/actions.js__ di fungsi __queryData__ menjadi seperti berikut:
+
+```js
+import axios from 'axios';
+const baseURL = 'http://localhost:8080';
+...
+
+export function queryData() {
+  return (dispatch, getState) => {
+    let cds = Object.assign({}, getState().cds);
+    // total halaman
+    axios.get('/cds', { baseURL: baseURL }).then(data => {
+      cds.total = data.data.length;
+      // perpage
+      axios.get('/cds', { baseURL: baseURL, params: { _page: cds.page, _limit: cds.limit } }).then(data => {
+        cds.data = [];
+        for (let d of data.data) cds.data.push(Object.assign({}, d));
+        dispatch(loadCds(cds));
+      }).catch(err => console.log(err));
+    }).catch(err => console.log(err));
+  }
+}
+...
+```
+
+* Kita menggunakan __axios.get__ untuk melakukan request ke json-server yang telah kita buat. Untuk pagination json-server menerima parameter _page dan _limit yang bisa digunakan untuk menampilkan data pada page tertentu saja.
+
+* Untuk menghapus data kita perlu mengubah fungsi __deleteCd__ menjadi seperti berikut:
+
+```js
+export function deleteCd(index) {
+  return dispatch => {
+    axios.delete('/cds/' + index, { baseURL: baseURL }).then(data => {
+      dispatch(queryData());
+    }).catch(err => console.log(err));
+  }
+}
+```
+
+* Jika tombol Edit di baris tabel ditekan kita harus mengambil data cd di server-json, karena itu kita akan mengubah fungsi __loadCd__ menjadi seperti berikut:
+
+```js
+...
+export function loadCd(id) {
+  return dispatch => {
+    if (id) {
+      axios.get('/cds/' + id, { baseURL: baseURL }).then(data => {
+        dispatch(setCd(Object.assign({}, data.data)));
+      }).catch(err => console.log(err));
+    } else dispatch(setCd(id));
+  }
+}
+...
+```
+
+* Selanjutnya kita akan memodifikasi fungsi __saveCd__ menjadi seperti berikut:
+
+```js
+...
+export function saveCd(cd) {
+  return dispatch => {
+    if (cd.id > 0) {
+      axios.put('/cds/' + cd.id, cd, { baseURL: baseURL }).then(data => {
+        dispatch(queryData());
+      }).catch(err => console.log(err));
+    } else {
+      axios.get('/cds', { baseURL: baseURL, params: { _page: 1, _limit: 1, _sort: 'id', _order: 'desc' } }).then(data => {
+        cd.id = (data.data[0] ? parseInt(data.data[0].id, 10) + 1 : 1);
+        axios.post('/cds', cd, { baseURL: baseURL }).then(data => {
+          dispatch(queryData());
+        }).catch(err => console.log(err));
+      }).catch(err => console.log(err));
+    }
+  }
+}
+...
+```
+
+* Untuk mengupdate data yang sudah ada kita menggunakan request __PUT__ dengan path __cds/:id__ dan untuk menambah data baru digunakan method __POST__ dengan path __cds__. Dengan begini kita sudah bisa mengedit dan menambah data baru dan tersimpan di file cdcol.json.
+
+
+
