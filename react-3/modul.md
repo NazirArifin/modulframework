@@ -10,6 +10,7 @@ Tujuan pembelajaran: Mahasiswa mengenal dan dapat menggunakan ReactJS dan Redux 
 npm install -g create-nw-react-app
 create-nw-react-app nama-app
 cd nama-app
+npm run start
 ```
 
 * Struktur folder dan file sama dengan ReactJS default namun perbedaanya pada file __index.html__ yang dari folder __public__ dikeluarkan sehingga berada di root folder. Kita perlu mengubah sedikit file __index.html__ menjadi seperti berikut:
