@@ -157,6 +157,14 @@ export function queryData() {
 ...
 ```
 
+* Kita ubah fungsi loadCds di __src/actions__ menjadi:
+
+```jsx
+export function loadCds(data) {
+  return { type: LOAD_CDS, data };
+}
+```
+
 * Fungsi yang direturn memiliki parameter __dispatch__ dan __getState__ yang mana parameter getState bersifat opsional. Pada contoh diatas kita menggunakan Promise untuk melakukan query ke database dan begitu data tersedia dipanggil fungsi __dispatch__ untuk mengubah state yang saat ini ada.
 
 * Kita perlu mengubah __src/reducers.js__ yang sudah ada di bagian __LOAD_CDS__ menjadi seperti berikut:
