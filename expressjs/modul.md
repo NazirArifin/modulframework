@@ -20,6 +20,14 @@ cd MyApp
 
 * Perintah diatas berarti kita akan membuat project expressJS menggunakan template engine __twig__ dan css engine __sass__.
 
+* Kita modifikasi file __bin/www__ di bagian port (sekitar baris 15) dengan mengubah nilai port menjadi 3100 seperti kode berikut:
+
+```js
+...
+var port = normalizePort(process.env.PORT || '3100');
+...
+```
+
 * Selanjutnya kita install dependensinya dengan menggunakan perintah berikut:
 
 ```sh
@@ -36,7 +44,7 @@ npm install --save-dev concurrently nodemon browser-sync
   "scripts": {
     "start": "node ./bin/www",
     "devstart": "nodemon --watch views --watch routes --watch public --ext js,twig,scss ./bin/www",
-    "browserSync": "browser-sync start --proxy localhost:3000 --reload-delay 700 --files views/*.twig,routes/*.js,public/stylesheets/*.scss",
+    "browserSync": "browser-sync start --proxy localhost:3100 --reload-delay 700 --files views/*.twig,routes/*.js,public/stylesheets/*.scss",
     "dev": "concurrently \"npm run devstart\" \"npm run browserSync\""
   }
 ```
@@ -49,9 +57,9 @@ npm install --save-dev concurrently nodemon browser-sync
 npm run dev
 ```
 
-* Otomatis sebuah jendela browser default akan terbuka dengan alamat __http://localhost:3001__ yang merupakan browser-sync proxy dari alamat server yang sebenarnya yaitu: __http://localhost:3000__.
+* Otomatis sebuah jendela browser default akan terbuka dengan alamat __http://localhost:3001__ yang merupakan browser-sync proxy dari alamat server yang sebenarnya yaitu: __http://localhost:3100__.
 
-* Agar kita bisa bekerja dengan SCSS dan memasukkan file scss dari bootstrap maka edit file ```app.js``` di baris 27 bagian __sassMiddleware__ nilai ```indentedSyntax``` menjadi ```false`` seperti berikut:
+* Agar kita bisa bekerja dengan SCSS dan memasukkan file scss dari bootstrap maka edit file ```app.js``` di baris 27 bagian __sassMiddleware__ nilai ```indentedSyntax``` menjadi ```false``` seperti berikut:
 
 ```js
 app.use(sassMiddleware({
