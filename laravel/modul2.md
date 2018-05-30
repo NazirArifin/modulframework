@@ -24,7 +24,7 @@ composer create-project laravel/laravel webapi "5.5.*" --prefer-dist
 php artisan serve
 ```
 
-* Untuk tampilkan client Anda bisa menggunakan project React dengan API dan pastikan endpointnya diganti dengan project Laravel (__http://localhost:8000__) yang sedang kita buat sekarang.
+* Untuk tampilkan client Anda bisa menggunakan project React dengan API dan pastikan endpointnya diganti dengan project Laravel (__http://localhost:8000__) yang sedang kita buat sekarang atau menggunakan [PostMan](https://www.getpostman.com/apps).
 
 ## Database & Model
 
