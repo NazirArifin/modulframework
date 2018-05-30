@@ -139,7 +139,7 @@ Route::get('/', function () {
 
 * Refresh/reload halaman web di browser Anda, maka Anda akan melihat tampilan tabel lengkap dengan header dan footer.
 
-* __Informasi__: Beberapa framework Javascript juga menggunakan tanda {{ }} sehingga akan gagal jika menggunakan templating Blade, karena itu agar tanda {{ }} tidak diterjemahkan oleh Blade dan dibiarkan seperti itu maka Anda harus menambahkan karakter __@__ di depan {{ }} seperti berikut: ```Hello, @{{ name }}```
+* __Informasi__: Beberapa framework Javascript seperti Angular juga menggunakan tanda {{ }} sehingga akan gagal jika menggunakan templating Blade, karena itu agar tanda {{ }} tidak diterjemahkan oleh Blade dan dibiarkan seperti itu maka Anda harus menambahkan karakter __@__ di depan {{ }} seperti berikut: ```Hello, @{{ name }}```
 
 * Untuk informasi lengkap tentang templating Blade termasuk penggunakan _directives_ __@if__, __@elseif__, __@else__, __@switch__, __@for__, __@while__, __@include__ dsb dapat Anda lihat di [Blade Templating](https://laravel.com/docs/5.5/blade)
 
@@ -181,7 +181,7 @@ Route::get('/', 'CdController@index');
 
 ## Database
 
-* Konfigurasi database terdapat di file __config/database.php__ dan sesuaikan dengan konfigurasi database Anda atau dengan mengubah nilai di file .env seperti berikut:
+* Konfigurasi database terdapat di file __config/database.php__ dan sesuaikan dengan konfigurasi database Anda atau dengan mengubah nilai di file __.env__ seperti berikut:
 
 ```sh
 ...
