@@ -1,6 +1,6 @@
 # Laravel 5.5
 
-Tujuan pembelajaran: Mahasiswa mengenal dan dapat menggunakan framework Laravel dengan baik.
+Tujuan pembelajaran: Mahasiswa mengenal dan dapat menggunakan framework Laravel 5.5 dengan baik.
 
 ## Persiapan
 
@@ -17,7 +17,13 @@ composer global require "laravel/installer"
 laravel new website
 ```
 
-* Perintah diatas akan membuat folder baru dengan nama "website" yang berisi instalasi Laravel dan dependensinya telah terinstall dengan lengkap.
+* atau menggunakan perintah composer seperti berikut:
+
+```sh
+composer create-project laravel/laravel website "5.5.*" --prefer-dist
+```
+
+* Perintah-perintah diatas akan membuat folder baru dengan nama "website" yang berisi instalasi Laravel dan dependensinya telah terinstall dengan lengkap.
 
 * Pastikan Anda sudah memiliki database __cdcol__, jika belum Anda buat database tersebut dan tabel dapat menjalankan perintah SQL [disini](https://github.com/NazirArifin/MEAN/blob/master/cdcol.sql)
 
@@ -420,12 +426,6 @@ Route::get('/cd/{id}', 'CdController@edit');
 
 ---
 
-## Tugas Akhir Untuk Ujian Praktikum
+## Tugas
 
 * __Lanjutkan pembuatan aplikasi hingga dapat mengedit, dan menghapus data__. Pastikan Anda menggunakan _method_ __update()__ dan __destroy__ yang ada di controller. Tambahkan route sesuai dengan template yang sudah ada.
-
-* Ujian praktikum dilaksanakan hari rabu seminggu setelah UAS, Anda harus mendemonstrasikan pembuatan aplikasi diatas dari awal sampai akhir (__View, Insert, Update, Delete__) __menggunakan Eloquent ORM (Model)__. __OPEN BOOK__, __OPEN INTERNET__, __bisa mengikuti langkah-langkah di modul ini__.
-
-* Tiap sesi terdiri dari 8-10 mahasiswa dengan waktu pengerjaan 1 jam.
-
-* Semoga sukses!
