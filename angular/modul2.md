@@ -13,7 +13,7 @@ npm install -g @angular/cli
 * Untuk membuat _project_ baru dengan scss maka dapat menggunakan perintah:
 
 ```sh
-ng new namaProject --style=scss
+ng new namaProject --style=scss --routing=true
 ```
 
 * Setelah beberapa saat instalasi maka untuk menjalankan aplikasi dengan menggunakan perintah:
@@ -26,39 +26,13 @@ ng serve --open
 * Untuk memasukkan bootstrap ke aplikasi Angular yang kita buat dapat digunakan perintah sebagai berikut:
 
 ```
-npm install --save bootstrap jquery popper.js
+npm install --save bootstrap
 ```
 
 * Untuk memasukkan scss dari bootstrap ataupun mengubah style umum / global Anda dapat mengedit file ```styles/scss``` kode scss berikut:
 
 ```scss
 @import '~bootstrap/scss/bootstrap';
-
-body {
-  padding-top: 5rem;
-  .mhs-thumbnail {
-    height: 80px;
-  }
-}
-```
-
-* Sedangkan untuk memasukkan javascript dari jquery, popper.js dan bootstrap salah satu caranya dengan cara mengedit file ```.angular-cli.json``` dibagian __scripts__ diubah menjadi seperti berikut (pastikan urutannya benar):
-
-```json
-      "scripts": [
-        "../node_modules/jquery/dist/jquery.min.js",
-        "../node_modules/popper.js/dist/umd/popper.min.js",
-        "../node_modules/bootstrap/dist/js/bootstrap.min.js"
-      ],
-```
-
-* Kemudian edit file ```src/app/app.component.ts``` dengan menambahkan kode
-
-```ts
-declare const $: any;
-
-@Component
-...
 ```
 
 ## Component
@@ -70,15 +44,14 @@ declare const $: any;
 * Sekarang kita akan memodifikasi template Component yang sudah ada yaitu dengan mengedit file ```src/app/app.component.html``` menjadi seperti berikut: (isi sebelumnya dihapus)
 
 ```html
-<nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
-  <a class="navbar-brand" href="">Universitas Madura</a>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="#">IF UNIRA</a>
 </nav>
-<div class="container pb-5">
+<div class="container">
   <div class="row">
-    <div class="col-sm-12">
-      <!-- UNTUK NAVIGASI, COMPONENT PAGE AKAN MUNCUL DISINI -->
-      <router-outlet></router-outlet>
-    </div>
+	<div class="col">
+	  <router-outlet></router-outlet>
+	</div>
   </div>
 </div>
 ```
@@ -96,7 +69,7 @@ Selamat Datang {{ nama }}
 <img [src]="variabel">
 ``` 
 
-* __Two way binding__ adalah suatu nilai variabel bisa diubah dari HTML menggunakan input yang diberi atribut __ngModel__, cara penggunaan dapat Anda lihat nanti di modul ini.
+* __Two way binding__ adalah suatu nilai variabel bisa diubah dari HTML menggunakan input yang diberi atribut __ngModel__.
 
 ```html
 <input type="text" [(ngModel)]="variabel" name="input">
@@ -115,136 +88,88 @@ Selamat Datang {{ nama }}
 * Untuk membuat component baru di Angular bisa menggunakan CLI dengan mengetikkan perintah seperti berikut:
 
 ```
-ng generate component nama-component
+ng generate component namacomponent
 ```
 
-* Sekarang kita buat __dua__ component baru yaitu __mhs-list__ untuk menampilkan list data mahasiswa dan __mhs-detail__ untuk menampilkan detail mahasiswa ketika link di daftar mahasiswa di klik.
+* Sekarang kita buat __dua__ component baru yaitu __list__ untuk menampilkan list data mahasiswa dan __detail__ untuk menampilkan detail mahasiswa ketika link di daftar mahasiswa di klik.
 
 * Ketikkan perintah berikut:
 
 ```
-ng generate component mhs-list
-ng generate component mhs-detail
+ng generate component pages/list
+ng generate component pages/detail
 ```
 
-* Jika sukses maka di folder __src__ akan muncul folder __mhs-list__ dan __mhs_detail__ yang masing-masing berisi file __.ts__, __.scss__, dan __.html__.
+* Jika sukses maka di folder __src__ akan muncul folder __pages/list__ dan __pages/detail__ yang masing-masing berisi file __.ts__, __.scss__, dan __.html__.
 
 ## Navigasi
 
-* Secara default router untuk navigasi tidak terpasang di Angular, karena itu kita perlu mengubah file __src/app/app.module.ts__ bagian import dengan mengimport RouterModule seperti berikut:
-
-```ts
-...
-import { RouterModule, Routes } from '@angular/router';
-...
-```
-
-* Kita buat routes sederhana yang hanya mengatur navigasi dari halaman list mahasiswa ke detail mahasiswa. Tambahkan kode berikut ini di __src/app/app.module.ts__ dibagian bawah import sebelum @NgModule:
+* Kita buat routes sederhana yang hanya mengatur navigasi dari halaman list mahasiswa ke detail mahasiswa. Tambahkan kode berikut ini di __src/app/app-routing.module.ts__:
 
 ```ts
 const appRoutes: Routes = [
-  { path: 'mhslist', component: MhsListComponent },
-  { path: 'mhs/:id', component: MhsDetailComponent },
-  { path: '', redirectTo: '/mhslist', pathMatch: 'full' }
+  { path: 'list', component: ListComponent },
+  { path: 'detail/:nim', component: DetailComponent },
+  { path: '', redirectTo: '/list', pathMatch: 'full' }
 ];
 ```
+* __Pastikan component List dan Detail sudah terimport dengan benar sehingga kode diatas tidak menyebabkan error__
 
-* Bagian __path__ adalah URL yang digunakan oleh aplikasi nantinya. URL __mhs/:id__ akan sesuai dengan URL mhs/3, mhs/5, dsb. Sedangkan bagian __component__ adalah menunjuk component apa yang akan digunakan saat URL sesuai dengan path. 
+* Bagian __path__ adalah URL yang digunakan oleh aplikasi nantinya. URL __detail/:id__ akan sesuai dengan URL detail/3, detail/5, dsb. Sedangkan bagian __component__ adalah menunjuk component apa yang akan digunakan saat URL sesuai dengan path. 
 
-* Selanjutnya kita tambahkan RouterModule ke aplikasi dengan cara memasukkannya ke bagian __imports__ dengan parameter __appRoutes__ yang telah kita buat sebelumnya:
-
-```ts
-...
-@NgModule({
-  declarations: [
-    AppComponent,
-    MhsListComponent,
-    MhsDetailComponent
-  ],
-  imports: [
-    RouterModule.forRoot(
-      appRoutes, { enableTracing: false }
-    ),
-    BrowserModule
-  ],
-  providers: [],
-  bootstrap: [AppComponent]
-})
-...
-```
-
-* Jika berhasil maka aplikasi Anda seharusnya menampilkan data HTML yang ada di dalam mhs-list.component.html. 
-
-* Kita akan memodifikasi file template __mhs-list.component.html__ sehingga menampilkan daftar mahasiswa yang jika diklik menuju halaman detail. Ubah kode htmlnya menjadi seperti berikut:
+* Kita akan memodifikasi file template __list.component.html__ sehingga menampilkan daftar mahasiswa yang jika diklik menuju halaman detail. Ubah kode htmlnya menjadi seperti berikut:
 
 ```html
-<div class="d-flex justify-content-between">
-  <h4>{{ titlePage }}</h4>
-  <form class="form-inline" name="form">
-    <label class="sr-only" for="search">Cari</label>
-    <input type="text" class="form-control mb-2 mr-sm-2" name="cari" (keyup)="cariMhs()" id="search" placeholder="Cari" [(ngModel)]="titlePage">
-  </form>
-</div>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th colspan="2">MAHASISWA</th>
+      <th>KONTAK</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <img src="" alt="" class="img-thumbnail">
+      </td>
+      <td><strong>NAMA</strong><br>NPM</td>
+      <td>TELEPON<br>ALAMAT</td>
+      <td>
+        <a href="" class="btn btn-info">DETAIL</a>
+      </td>
+    </tr>
+  </tbody>
+</table>
 
-<hr>
-<div class="list-group">
-  <a [routerLink]="['/mhs', mhs.npm]" class="list-group-item list-group-item-action flex-column align-items-start" *ngFor="let mhs of mhsList">
-    <div class="d-flex w-100">
-      <img src="http://via.placeholder.com/80x80" class="rounded" alt="">
-      <div class="ml-3">
-        <h5 class="mb-1">{{ mhs.npm }}</h5>
-        <p>{{ mhs.nama }}</p>
-      </div>
-    </div>
-  </a>
-</div>
+<nav aria-label="Page navigation example">
+  <ul class="pagination justify-content-center">
+    <li class="page-item">
+      <button type="button" class="page-link">&laquo; SEBELUMNYA</button>
+    </li>
+    <li class="page-item">
+      <button type="button" class="page-link">BERIKUTNYA &raquo;</button>
+    </li>
+  </ul>
+</nav>
 ```
 
-* Agar dapat menggunakan __[(ngModel)]__ di input cari mahasiswa kita perlu mengimport module form di __src/app/app.module.ts__ dengan menambahkan kode berikut di bagian import:
+* Sekarang kita ubah file __list.component.ts__ menjadi seperti berikut:
 
 ```ts
 ...
-import { FormsModule } from '@angular/forms'; // biar bisa ngModel
-...
+export class ListComponent implements OnInit {
 
-  import: [
-    ...
-    FormsModule,
-    BrowserModule
-  ],
-...
-```
-
-* Untuk menampilkan nilai variabel dari class typescript secara langsung bisa menggunakan perintah __{{ namaVariabelnya }}__ (_one way binding_)
-
-* Untuk memasukkan variabel ke input agar bisa mengubah nilai variabel dari view (html) dapat menggunakan perintah __[(ngModel)]="namaVariabel"__ (_two way binding_)
-
-* Selanjutnya masih di kode HTML sebelumnya juga terdapat kode _directive_ __*ngFor__ untuk mencacah array data mahasiswa di variabel __mhsList__. Pastikan Anda memahami konsep directive seperti *ngFor, *ngIf, dsb., karena ini berguna dalam tampilan agar lebih dinamis mengikuti data yang ada di class Componentnya.
-
-* Atribut __[routerLink]__ digunakan untuk membuat link secara dinamis berdasarkan variabel mhs. Bermacam bentuk routerLink dapat dilihat di dokumentasi Angular tentang Router.
-
-* Sekarang kita ubah file __mhs-list.component.ts__ menjadi seperti berikut:
-
-```ts
-...
-export class MhsListComponent implements OnInit {
-
-  titlePage: string;
-  mhsList: Array<any> = [
+  mhsList: any[] = [
     {
-      npm: '201452009', nama: 'Ridho Abdillah', link: ['/mhs/201452009']
+      foto: '', npm: '201452009', nama: 'Ridho', alamat: 'Pamekasan', telepon: '000', link: ['/mhs/201452009']
     },
     {
-      npm: '201452010', nama: 'Fajar Abu Sofyan', link: ['/mhs/201452010']
+      foto: '', npm: '201452010', nama: 'Fajar', alamat: 'Pamekasan', telepon: '000', link: ['/mhs/201452010']
     }
   ];
 
   constructor() {
-    this.titlePage = 'Mahasiswa Universitas Madura';
-  }
-
-  public cariMhs() {
-    console.log(this.titlePage);
   }
 
   ngOnInit() {
@@ -258,17 +183,19 @@ export class MhsListComponent implements OnInit {
 
 * Seharusnya tampilan browser Anda sudah dapat menampilkan data mahasiswa sesuai dengan data di class Component lengkap dengan link menuju detail mahasiswa.
 
-* Sekarang kita berpindah ke component mhs-detail dengan pertamakali mengubah file template __mhs-detail.component.html__ menjadi seperti berikut:
+* Sekarang kita berpindah ke component detail dengan pertamakali mengubah file template __detail.component.html__ menjadi seperti berikut:
 
 ```html
 <div class="card text-center">
   <div class="card-header">
-    {{ npm }}
+    NPM
   </div>
   <div class="card-body">
-    <h5 class="card-title">Ridho Abdillah</h5>
-    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-    <a routerLink="/mhslist" class="btn btn-primary">KEMBALI</a>
+    <p><img src="" alt="foto" class="img-thumbnail"></p>
+    <h5 class="card-title">NAMA</h5>
+    <p class="text-muted">TELEPON</p>
+    <p class="card-text">ALAMAT</p>
+    <button type="button" class="btn btn-primary">KEMBALI</button>
   </div>
   <div class="card-footer text-muted">
     Universitas Madura
@@ -279,30 +206,21 @@ export class MhsListComponent implements OnInit {
 * Di file __mhs-detail.component.ts__ diubah menjadi berikut:
 
 ```ts
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+public npm: string;
 
-@Component({
-  selector: 'app-mhs-detail',
-  templateUrl: './mhs-detail.component.html',
-  styleUrls: ['./mhs-detail.component.scss']
-})
-export class MhsDetailComponent implements OnInit {
+constructor(
+  private route: ActivatedRoute,
+  private http: HttpClient,
+  private location: Location
+) {
+}
 
-  npm: string;
-
-  constructor(
-    private route: ActivatedRoute
-  ) { }
-
-  ngOnInit() {
-    this.npm =  this.route.snapshot.params['id'];
-  }
-
+ngOnInit() {
+  this.npm = this.route.snapshot.paramMap.get('nim');
 }
 ```
 
-* Perhatikan bahwa kita mengimpor __ActivatedRoute__ dari __@angular/router__ untuk mendapatkan data npm dari url dengan bentuk __mhs/:id__. Kemudian untuk mendapatkan __:id__ menggunakan kode ___snapshot.params['id']___. 
+* Perhatikan bahwa kita mengimpor __ActivatedRoute__ dari __@angular/router__ untuk mendapatkan data npm dari url dengan bentuk __detail/:npm__. Kemudian untuk mendapatkan __:npm__ menggunakan kode ___snapshot.paramMap.get('nim')___. 
 
 * Sekarang navigasi secara umum sudah dapat berfungsi. Anda dapat menggunakan tombol link untuk melihat detail mahasiswa dan juga tombol kembali untuk daftar mahasiswa.
 
@@ -325,16 +243,13 @@ import { HttpClientModule } from '@angular/common/http';
 ...
 ```
 
-* Selanjutnya kita perlu mengubah file __mhs-list.component.ts__ untuk melakukan request HTTP ketika Component dimulai. Pertama kita import HttpClient dan HttpParams dan masukkan di HttpClient di __constructor__.
+* Selanjutnya kita perlu mengubah file __list.component.ts__ untuk melakukan request HTTP ketika Component dimulai. Pertama kita import HttpClient dan HttpParams dan masukkan di HttpClient di __constructor__.
 
 ```ts
 ...
 import { HttpClient, HttpParams } from '@angular/common/http';
 
 ...
-export class MhsListComponent implements OnInit {
-
-  titlePage: string;
   apiUrl: string;
 
   ...
@@ -343,8 +258,7 @@ export class MhsListComponent implements OnInit {
   constructor(
     private http: HttpClient
   ) {
-    this.titlePage = 'Mahasiswa Universitas Madura';
-    this.apiUrl = 'http://api1.unira.ac.id/';
+    this.apiUrl = 'https://api.unira.ac.id';
   }
 
   ...
@@ -358,9 +272,9 @@ export class MhsListComponent implements OnInit {
     let params = new HttpParams();
     params = params.append('limit', '5'); // batasi 5 data pagination
     params = params.append('filter[prodi]', '52'); // dari prodi TI
-    params = params.append('filter[nim]', '2015'); // nim like %nim%
+    params = params.append('filter[nim]', '2016'); // nim like %nim%
 
-    this.http.get(this.apiUrl + 'v1/mahasiswa', { params: params }).toPromise().then(data => {
+    this.http.get(this.apiUrl + '/v1/mahasiswa', { params: params }).toPromise().then(data => {
       this.mhsList = data['data'];
     });
   }
@@ -374,185 +288,41 @@ export class MhsListComponent implements OnInit {
 * Kita harus memodifikasi file __mhs-list.component.html__ (template) kita agar sesuai dengan data baru yang kita peroleh menjadi seperti berikut:
 
 ```html
-<div class="d-flex justify-content-between">
-  <h4>{{ titlePage }}</h4>
-  <form class="form-inline" name="form">
-    <label class="sr-only" for="search">Cari</label>
-    <input type="text" class="form-control mb-2 mr-sm-2" name="cari" (keyup)="cariMhs()" id="search" placeholder="Cari" [(ngModel)]="titlePage">
-  </form>
-</div>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th colspan="2">MAHASISWA</th>
+      <th>KONTAK</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let mhs of mhsList">
+      <td>
+        <img [src]="apiUrl + '/' + mhs.attributes.thumbnail" alt="" class="img-thumbnail">
+      </td>
+      <td><strong>{{mhs.attributes.nama}}</strong><br>{{mhs.id}}</td>
+      <td>{{mhs.attributes.hp}}<br>{{mhs.attributes.alamat}}</td>
+      <td>
+        <a [routerLink]="['/detail/', mhs.id]"  class="btn btn-info">DETAIL</a>
+      </td>
+    </tr>
+  </tbody>
+</table>
 
-<hr>
-<div class="list-group">
-  <a [routerLink]="['/mhs', mhs.id]" class="list-group-item list-group-item-action flex-column align-items-start" *ngFor="let mhs of mhsList">
-    <div class="d-flex w-100">
-      <img [src]="apiUrl + mhs.attributes?.thumbnail" class="rounded mhs-thumbnail" alt="">
-      <div class="ml-3">
-        <h5 class="mb-1">{{ mhs.id }}</h5>
-        <p>{{ mhs.attributes?.nama }}</p>
-      </div>
-    </div>
-  </a>
-</div>
-
-<hr>
-<nav aria-label="Page Navigation">
+<nav aria-label="Page navigation example">
   <ul class="pagination justify-content-center">
-    <li class="page-item"><a class="page-link" href="">1</a></li>
-    <li class="page-item"><a class="page-link" href="">2</a></li>
-    <li class="page-item"><a class="page-link" href="">3</a></li>
+    <li class="page-item">
+      <button type="button" [disabled]="page === 1" (click)="prevPage()" class="page-link">&laquo; SEBELUMNYA</button>
+    </li>
+    <li class="page-item">
+      <button type="button" [disabled]="page === totalPage" (click)="nextPage()" class="page-link">BERIKUTNYA &raquo;</button>
+    </li>
   </ul>
 </nav>
 ```
 
 * Jika berhasil maka seharusnya Anda sudah dapat melihat tampilan data mahasiswa Universitas Madura lengkap dengan foto thumbnailnya. *_Namun ketika link di klik dan menuju halaman detail datanya masih belum sesuai dengan data yang sebenarnya_.
-
-## Service
-
-* Jika kita akan menggunakan perintah HTTP request ke API UNIRA berkali-kali dan digunakan oleh lebih dari satu Component (contohnya oleh mhs-list dan mhs-detail) maka kita perlu membuat sebuah Service. Anda bisa saja _copy paste_ kode yang sama di setiap Component tapi ini akan membuat kode Anda menjadi "kotor" dan tidak rapi. Karena itu kita perlu __Service__ yang dapat kita panggil oleh semua Component dengan mudah tanpa mengulang-ulang kode import dan kode dasar yang sama.
-
-* Untuk membuat service baru Anda ketikkan perintah berikut ini:
-
-```
-ng generate service mhsApi
-```
-
-* Jika sukses akan muncul file baru di folder app yaitu: __mhs-api.service.ts__. Kita akan memindahkan perintah import HttpClient dan HttpParams, perintah http.get ke Class ini. Kita ubah file __mhs-api.service.ts__ menjadi seperti berikut:
-
-```ts
-...
-import { HttpClient, HttpParams } from '@angular/common/http';
-
-@Injectable()
-export class MhsApiService {
-
-  private apiUrl: string;
-  constructor(
-    private http: HttpClient
-  ) {
-    this.apiUrl = 'http://api1.unira.ac.id/';
-  }
-
-  getApiUrl() {
-    return this.apiUrl;
-  }
-  
-  // untuk request semua mahasiswa
-  getAllMhs() {
-    return new Promise<any[]>((resolve, reject) => {
-      let params = new HttpParams();
-      params = params.append('limit', '4'); // batasi 5 data pagination
-      params = params.append('filter[prodi]', '52'); // dari prodi TI
-      params = params.append('filter[nim]', '2015'); // nim like %nim%
-
-      this.http.get(this.apiUrl + 'v1/mahasiswa', { params: params }).toPromise().then(data => {
-        resolve(data['data']);
-      });
-    });
-  }
-  
-  // untuk request detail per mahasiswa
-  getMhsDetail(npm) {
-    return new Promise((resolve, reject) => {
-      this.http.get(this.apiUrl + 'v1/mahasiswa/' + npm).toPromise().then(data => {
-        resolve(data['data']);
-      });
-    });
-  }
-...
-
-```
-
-* Perhatikan bahwa kita membungkus request ke API untuk data mahasiswa dalam sebuah fungsi __getAllMhs()__ yang nanti akan dipanggil oleh Component mhs-list dan fungsi __getMhsDetail__ yang akan dipanggil oleh Component mhs-detail. Selain itu juga pastikan Anda sudah mengimport HttpClient dan HttpParams.
-
-* Selanjutnya kita ubah file __mhs-list.component.ts__ menjadi seperti berikut (pastikan import HttpClient dan HttpParam sebelumnya sudah tidak ada):
-
-```ts
-import { Component, OnInit } from '@angular/core';
-import { MhsApiService } from '../mhs-api.service';
-
-...
-  constructor(private mhsService: MhsApiService) {
-    this.titlePage = 'Mahasiswa Universitas Madura';
-    this.apiUrl = this.mhsService.getApiUrl();
-  }
-
-  public cariMhs() {
-    console.log(this.titlePage);
-  }
-
-  ngOnInit() {
-    this.mhsService.getAllMhs().then(data => {
-      this.mhsList = data;
-    });
-  }
-...
-```
-
-* Di fungsi __ngOnInit()__ kita sudah menggunakan Service yang baru saja kita buat dan memanggil fungsi __getAllMhs()__ yang mereturn data hasil request ke API Unira. Service ini akan digunakan juga di Component __mhs-detail__ sehingga kita perlu memodifikasi file __mhs-detail.component.ts__ menjadi seperti berikut:
-
-```ts
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { MhsApiService } from '../mhs-api.service';
-
-@Component({
-  selector: 'app-mhs-detail',
-  templateUrl: './mhs-detail.component.html',
-  styleUrls: ['./mhs-detail.component.scss']
-})
-export class MhsDetailComponent implements OnInit {
-
-  npm: string;
-  mhs: any;
-  apiUrl: string;
-
-  constructor(
-    private route: ActivatedRoute,
-    private mhsService: MhsApiService
-  ) {
-    this.mhs = {};
-    this.apiUrl = this.mhsService.getApiUrl();
-  }
-
-  ngOnInit() {
-    this.npm =  this.route.snapshot.params['id'];
-    this.mhsService.getMhsDetail(this.npm).then(data => {
-      this.mhs = data;
-    });
-  }
-
-}
-```
-
-* Perhatikan bahwa kita tinggal menggunakan Service yang telah dibuat dalam Component mhs-detail diatas dengan menggunakan fungsi __getMhsDetail(this.npm)__. Fungsi ini akan mengubah data variabel mhs menjadi data hasil request ke API UNIRA.
-
-* Selain itu kita juga akan mengubah data view html menjadi seperti berikut:
-
-```html
-<div class="card text-center">
-  <div class="card-header">
-    {{ npm }}
-  </div>
-  <div class="card-body">
-    <p><img [src]="apiUrl + mhs.attributes?.thumbnail" alt="foto" class="img-thumbnail"></p>
-    <h5 class="card-title">{{ mhs.attributes?.nama }}</h5>
-    <p class="card-text">{{ mhs.attributes?.alamat }}</p>
-    <a routerLink="/mhslist" class="btn btn-primary">KEMBALI</a>
-  </div>
-  <div class="card-footer text-muted">
-    Universitas Madura
-  </div>
-</div>
-```
-
-* Jika berhasil Anda akan mendapatkan tampilan navigasi yang sudah berjalan lengkap dengan halaman list dan detail mahasiswa.
-
-## TUGAS
-
-* Buat pagination yang berfungsi dengan menambah paramater __page__ di request ke API UNIRA!
-
-* Fungsikan pencarian mahasiswa sehingga mahasiswa yang muncul di list sesuai dengan kata kunci pencarian yang dimasukkan!
 
 
 

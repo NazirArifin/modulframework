@@ -1,0 +1,8 @@
+.merah {
+  background-color: $merah;
+  width: $lebar - $sidebar;
+}
+
+.merah-terang {
+  background-color: lighten($merah, 30%);
+}

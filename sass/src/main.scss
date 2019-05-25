@@ -1,0 +1,30 @@
+body {
+  margin: 0;
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+.flex-container {
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  justify-content: center; // mengatur child berdasarkan main axis
+  align-items: flex-start; // mengatur child berdasarkan cross axis
+  align-content: space-around;
+
+  height: 300px;
+  background-color: aqua;
+}
+
+.flex-item {
+  background-color: navy;
+  color: #fff;
+  width: 20%;
+
+  line-height: 50px;
+  text-align: center;
+  flex-grow: 1;
+
+  &.menu-2 {
+    flex-grow: 2;
+  }
+}
