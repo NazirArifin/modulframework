@@ -2,7 +2,9 @@
 
 * Edit home.blade.php tambah link ke /cd
 * Buat migration books (id, title, author, year)
+```sh
   - php artisan make:migration create_books_table
+```
 ```sh
 php artisan migrate
 ```
