@@ -278,5 +278,51 @@ Book::destroy($id);
 return \redirect()->route('book');
 ```
 
+* Modifikasi BookController di fungsi index
+```php
+    public function index(Request $request)
+    {
+      $query = $request->get('query') ?? '';
+      
+      $books = Book::where('title', 'like', "%{$query}%")->orWhere('author', 'like', "%{$query}%")->paginate(2)->withQueryString();
+        return \view('book.show', [
+          'query' => $query,
+          'books' => $books
+        ]);
+    }
+```
+
+* Menampilkan form pencarian di show.blade.php
+```php
+<div class="row">
+  <div class="col">
+    <form action="" method="GET">
+      <div class="input-group">
+        <input type="text" name="query" value="{{ $query }}" class="form-control" placeholder="Cari">
+        <div class="input-group-append">
+          <button class="btn btn-info">CARI</button>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="col">
+    <a href="/book/add" class="float-right btn btn-primary mb-3">Tambah Data</a>
+  </div>
+</div>
+```
+
+* Untuk menampilkan, edit show.blade.php tepat dibawah tabel
+```php
+{{ $books->links() }}
+```
+
+* Pagination agar ikut style bootstrap, edit file: app/Providers/AppServiceProvider.php
+```php
+    public function boot()
+    {
+        Paginator::useBootstrap();
+    }
+```
+
 
 
